@@ -8,6 +8,9 @@ sudo apt-get install docker-compose
 
 # Launch stack
 
+cp config/odoo.config.default config/odoo.config
+chmod 777 config
+
 export DB_PASSWORD=replace_with_your_database_password; docker-compose -f docker-compose.yml up
 
 This will download postgre & odoo docker images, install them and run them with the parameters define on docker-compose
