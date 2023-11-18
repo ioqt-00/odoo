@@ -18,3 +18,11 @@ Then, visit http://localhost:8069 using a browser.
 This repo contains a docker compose file, the accounting module Odoo 15 Accounting from the odoomates GitHub repo, and a few config files. The docker compose file will run an odoo instance on port 8069, with the Accounting module in the right folder, and give an easy way to configure the odoo instance.
 
 Note that once you have installed the odoo instance, you can delete unavailable apps in the "Apps" menu, using the "List" layout (button on top right)
+
+
+# Upgrade 
+If you want to upgrade to a more recent odoo version, you'll have to migrate your DB. 
+The scripts found in Odoo documentation do not work if run a free instance of Odoo, and are for squbscribers only. 
+It seems like ou can find scripts to do that manuall though:
+https://github.com/OCA/OpenUpgrade
+
