@@ -1,11 +1,7 @@
 ## Module <om_fiscal_year>
 
-#### 15.04.2022
-#### Version 15.0.2.1.0
-##### IMP
-- turkish translation
+#### 25.11.2021
+#### Version 17.0.1.0
+##### ADD
+- initial release
 
-#### 07.12.2021
-#### Version 15.0.2.0.0
-##### IMP
-- lock date wizard updates: form rearranged and added tax lock date

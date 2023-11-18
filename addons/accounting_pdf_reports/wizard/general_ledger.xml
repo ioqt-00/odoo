@@ -4,12 +4,13 @@
     <record id="account_report_general_ledger_view" model="ir.ui.view">
         <field name="name">General Ledger</field>
         <field name="model">account.report.general.ledger</field>
-        <field name="inherit_id" ref="account.account_common_report_view"/>
+        <field name="inherit_id" ref="accounting_pdf_reports.account_common_report_view"/>
         <field name="arch" type="xml">
             <data>
                 <xpath expr="//field[@name='journal_ids']" position="after">
                     <field name="analytic_account_ids" widget="many2many_tags"
                            options="{'no_open': True, 'no_create': True}"
+                           invisible="1"
                            groups="analytic.group_analytic_accounting"/>
                     <field name="account_ids" widget="many2many_tags"
                            options="{'no_open': True, 'no_create': True}"/>

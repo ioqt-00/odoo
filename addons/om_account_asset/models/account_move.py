@@ -10,7 +10,7 @@ class AccountMove(models.Model):
     _inherit = 'account.move'
 
     asset_ids = fields.One2many('account.asset.asset', 'invoice_id',
-                                string="Assets", copy=False)
+                                string="Assets")
 
     def button_draft(self):
         res = super(AccountMove, self).button_draft()
@@ -49,7 +49,7 @@ class AccountMove(models.Model):
         for inv in self:
             context = dict(self.env.context)
             context.pop('default_type', None)
-            for mv_line in inv.invoice_line_ids.filtered(lambda line: line.move_id.move_type in ('in_invoice','out_invoice')):
+            for mv_line in inv.invoice_line_ids:
                 mv_line.with_context(context).asset_create()
         return result
 
@@ -89,12 +89,12 @@ class AccountMoveLine(models.Model):
                                       'your asset category cannot be 0.'))
                 months = cat.method_number * cat.method_period
                 if rec.move_id.move_type in ['out_invoice', 'out_refund']:
-                    price_subtotal = rec.currency_id._convert(
-                        rec.price_subtotal,
-                        rec.company_currency_id,
-                        rec.company_id,
-                        rec.move_id.invoice_date or fields.Date.context_today(
-                            rec))
+                    price_subtotal = self.currency_id._convert(
+                        self.price_subtotal,
+                        self.company_currency_id,
+                        self.company_id,
+                        self.move_id.invoice_date or fields.Date.context_today(
+                            self))
 
                     rec.asset_mrr = price_subtotal / months
                 if rec.move_id.invoice_date:
@@ -131,29 +131,22 @@ class AccountMoveLine(models.Model):
                 asset.validate()
         return True
 
-    @api.onchange('asset_category_id')
+    @api.onchange('asset_category_id', 'product_uom_id')
     def onchange_asset_category_id(self):
         if self.move_id.move_type == 'out_invoice' and self.asset_category_id:
             self.account_id = self.asset_category_id.account_asset_id.id
         elif self.move_id.move_type == 'in_invoice' and self.asset_category_id:
             self.account_id = self.asset_category_id.account_asset_id.id
 
-    @api.onchange('product_uom_id')
-    def _onchange_uom_id(self):
-        result = super(AccountMoveLine, self)._onchange_uom_id()
-        self.onchange_asset_category_id()
-        return result
-
     @api.onchange('product_id')
-    def _onchange_product_id(self):
-        vals = super(AccountMoveLine, self)._onchange_product_id()
+    def _inverse_product_id(self):
+        res = super(AccountMoveLine, self)._inverse_product_id()
         for rec in self:
             if rec.product_id:
                 if rec.move_id.move_type == 'out_invoice':
                     rec.asset_category_id = rec.product_id.product_tmpl_id.deferred_revenue_category_id.id
                 elif rec.move_id.move_type == 'in_invoice':
                     rec.asset_category_id = rec.product_id.product_tmpl_id.asset_category_id.id
-        return vals
 
     def get_invoice_line_account(self, type, product, fpos, company):
         return product.asset_category_id.account_asset_id or super(AccountMoveLine, self).get_invoice_line_account(type, product, fpos, company)

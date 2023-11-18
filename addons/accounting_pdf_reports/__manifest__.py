@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 {
-    'name': 'Odoo 15 Accounting Financial Reports',
-    'version': '15.0.8.2.0',
+    'name': 'Odoo 17 Accounting Financial Reports',
+    'version': '17.0.1.0',
     'category': 'Invoicing Management',
-    'description': 'Accounting Reports For Odoo 15, Accounting Financial Reports, '
-                   'Odoo 15 Financial Reports',
-    'summary': 'Accounting Reports For Odoo 15',
+    'description': 'Accounting Reports For Odoo 17, Accounting Financial Reports, '
+                   'Odoo 17 Financial Reports',
+    'summary': 'Accounting Reports For Odoo 17',
     'sequence': '1',
     'author': 'Odoo Mates, Odoo SA',
     'license': 'LGPL-3',
@@ -18,9 +18,12 @@
     'live_test_url': 'https://www.youtube.com/watch?v=yA4NLwOLZms',
     'data': [
         'security/ir.model.access.csv',
+        'data/account_account_type.xml',
         'views/menu.xml',
+        'views/ledger_menu.xml',
         'views/financial_report.xml',
         'views/settings.xml',
+        'wizard/account_report_common_view.xml',
         'wizard/partner_ledger.xml',
         'wizard/general_ledger.xml',
         'wizard/trial_balance.xml',
@@ -40,8 +43,7 @@
         'report/report_journal_entries.xml',
     ],
     'pre_init_hook': '_pre_init_clean_m2m_models',
-    'installable': True,
-    'application': False,
-    'auto_install': False,
     'images': ['static/description/banner.gif'],
 }
+
+# todo nys settings page
